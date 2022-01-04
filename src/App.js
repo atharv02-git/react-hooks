@@ -1,39 +1,22 @@
-import { useState, useMemo, useEffect } from "react";
-
+import { useEffect, useRef, useState } from "react"
 export default function App() {
-  const [number, setNumber] = useState(0);
-  const [dark, setDark] = useState(false);
-  const doubleNumber = useMemo(() => {
-    return slowFunction(number);
-  }, [number]);
+  const[name, setName] = useState('')
+  const inputRef = useRef()
+  //how to store the prev value of state in useRef
+  const prevName = useRef('')
 
-  const themeStyles = useMemo(() => {
-    return {
-      backgroundColor: dark ? "black" : "white",
-      color: dark ? "white" : "black",
-    };
-  }, [dark]);
+  const focus = () => {
+    inputRef.current.focus()
+  }
+
   useEffect(() => {
-    console.log("Theme Changed");
-  }, [themeStyles]);
+    prevName.current = name
+  },[name])
 
   return (
     <>
-      <input
-        type="number"
-        value={number}
-        onChange={(e) => setNumber(parseInt(e.target.value))}
-      />
-      <button onClick={() => setDark((prevDark) => !prevDark)}>
-        Change Theme
-      </button>
-      <div style={themeStyles}>{doubleNumber}</div>
+      <input ref={inputRef} type="text" value={name} onChange={e => setName(e.target.value)} />
+      <div onClick={focus}>My name is: {name} and it used to be: {prevName.current}</div>
     </>
-  );
-}
-
-function slowFunction(num) {
-  console.log("Calling Slow Function");
-  for (let i = 0; i < 1000000000; i++) {}
-  return num * 2;
+  )
 }
