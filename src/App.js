@@ -1,38 +1,39 @@
-import "./App.css";
-import { useEffect, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export default function App() {
-  const [resourceType, setResourceType] = useState("posts");
-  // const [items, setItems] = useState([]);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [number, setNumber] = useState(0);
+  const [dark, setDark] = useState(false);
+  const doubleNumber = useMemo(() => {
+    return slowFunction(number);
+  }, [number]);
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth)
-  }
-
-  // useEffect(() => {
-  //   fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-  //     .then((response) => response.json())
-  //     .then((json) => setItems(json));
-  // }, [resourceType]);
-  
+  const themeStyles = useMemo(() => {
+    return {
+      backgroundColor: dark ? "black" : "white",
+      color: dark ? "white" : "black",
+    };
+  }, [dark]);
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-
-    // It is necessary to add cleanup function after an event listener so that if the app component is destroyed or gets unmount the event listener will be removed automatically
-    window.removeEventListener("resize", handleResize);
-  })
+    console.log("Theme Changed");
+  }, [themeStyles]);
 
   return (
     <>
-      <div>
-        <button onClick={() => setResourceType("posts")}>Posts</button>
-        <button onClick={() => setResourceType("users")}>users</button>
-        <button onClick={() => setResourceType("comments")}>comments</button>
-      </div>
-      <h1>{resourceType}</h1>
-      {/* {items.map((item) => <pre key={item.id}>{JSON.stringify(item)}</pre>)} */}
-      <div>{windowWidth}</div>
+      <input
+        type="number"
+        value={number}
+        onChange={(e) => setNumber(parseInt(e.target.value))}
+      />
+      <button onClick={() => setDark((prevDark) => !prevDark)}>
+        Change Theme
+      </button>
+      <div style={themeStyles}>{doubleNumber}</div>
     </>
   );
+}
+
+function slowFunction(num) {
+  console.log("Calling Slow Function");
+  for (let i = 0; i < 1000000000; i++) {}
+  return num * 2;
 }
