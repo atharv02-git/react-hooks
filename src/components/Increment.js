@@ -1,26 +1,24 @@
-import React,{useState} from 'react'
-
+import React, { useState } from "react";
 
 function Increment() {
-    const initialCount = 0;
-    const [count, setCount] = useState(initialCount)
+  const [name, setName] = useState({ firstName: "", lastName: "" });
 
-    // note if you want to update the state based on its previous value always use prevState
-    const incrementFive = () => {
-        for(let i = 0; i < 5; i++) {
-            setCount(prevCount => prevCount + 1)
-        }
-    }
-
-    return (
-        <div>
-            Count: {count}
-            <button onClick={() => setCount(initialCount)}>Reset</button>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
-            <button onClick={() => setCount(count - 1)}>Decrement</button>
-            <button onClick={incrementFive}>Increment by 5</button>
-        </div>
-    )
+  return (
+    <form>
+      <input
+        type="text"
+        value={name.firstName}
+        onChange={(e) => setName({ ...name, firstName: e.target.value })}
+      />
+      <input
+        type="text"
+        value={name.lastName}
+        onChange={(e) => setName({ ...name, lastName: e.target.value })}
+      />
+      <h2>Your firstName is:- {name.firstName}</h2>
+      <h2>Your lastName is:- {name.lastName}</h2>
+    </form>
+  );
 }
 
-export default Increment
+export default Increment;
