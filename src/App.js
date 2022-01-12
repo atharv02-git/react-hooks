@@ -1,13 +1,10 @@
-import HookMouse from "./components/HookMouse";
-import Increment from "./components/Increment";
-import MouseContainer from "./components/MouseContainer";
+import DataFetching from "./components/DataFetching";
+import './App.css';
 
 export default function App() {
   return (
     <div>
-      {/* <Increment /> */}
-      {/* <HookMouse /> */}
-      <MouseContainer />
+      <DataFetching />
     </div>
   )
 }
