@@ -2,38 +2,30 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function DataFetching() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [post, setPost] = useState({});
-  const [id, setId] = useState(1);
-  const [idFromButtonClick, setIdFromButtonClick] = useState(1);
-
-  const clickHandler = () => {
-    setIdFromButtonClick(id);
-  };
 
   useEffect(() => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .get(`https://jsonplaceholder.typicode.com/posts/1`)
       .then((res) => {
-        console.log(res);
+        setLoading(false);
         setPost(res.data);
+        setError("");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        setLoading(false);
+        setPost({});
+        console.log(error);
+        setError("Something went wrong");
       });
-  }, [idFromButtonClick]);
+  }, []);
 
   return (
     <div>
-      <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-      <button type="button" onClick={clickHandler}>
-        Fetch Data
-      </button>
-      <div>{post.title}</div>
-      {/* <ul>
-        {post.map((data) => (
-          <li key={data.id}>{data}</li>
-        ))}
-      </ul> */}
+        {loading ? 'Loading...' : post.title}
+        {error ? error : null}
     </div>
   );
 }
