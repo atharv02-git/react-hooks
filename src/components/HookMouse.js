@@ -13,6 +13,12 @@ function HookMouse() {
     useEffect(() => {
         console.log("useEffect called")
         window.addEventListener("mousemove", logMousePosition)
+
+        // cleanup to cancel all subscriptions
+        return () => {
+            console.log('cleanup function called')
+            window.removeEventListener("mousemove", logMousePosition)
+        }
     }, [])
 
     return (
